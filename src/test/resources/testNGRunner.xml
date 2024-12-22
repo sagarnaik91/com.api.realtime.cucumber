@@ -1,0 +1,34 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="payPal API" parallel="tests">
+
+    <!--<test name="Create Customer">
+        <classes>
+            <class name="com.api.testcases.stripe.CreateCustomerTest_Optimized"/>
+        </classes>
+    </test>
+    <test name="Delete Customer">
+        <classes>
+            <class name="com.api.testcases.stripe.DeleteCustomerTest"/>
+        </classes>
+    </test>-->
+    <!--<test name="Create Order">
+        <classes>
+            <class name="com.api.testcases.payPal.CreateOrderTest"/>
+        </classes>
+
+    </test>
+    <test name="Get Order">
+        <classes>
+            <class name="com.api.testcases.payPal.GetOrderTest"/>
+        </classes>
+
+    </test>-->
+    <test name="Cucumber Test">
+        <classes>
+            <class name="com.api.cucumberRunner.RunCuke"/>
+        </classes>
+    </test>
+
+
+
+</suite> <!-- Suite -->
