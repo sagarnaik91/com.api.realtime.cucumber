@@ -15,6 +15,7 @@ public class BaseTest {
     public static Properties prop = new Properties();
     public static FileInputStream fis;
     public static Response response;
+    public static String orderId;
 
 
     public static void init() throws IOException {

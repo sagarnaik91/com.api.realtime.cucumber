@@ -11,14 +11,19 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static com.api.base.BaseTest.prop;
 import static io.restassured.RestAssured.given;
 
-public class StripeSteps  {
+public class StripeSteps {
     public RequestSpecification reqSpec = null;
     public Response res = null;
+    String filePath = "src/test/resources/requestPayload/stripeCreateRequest";
+    String fileData;
 
     @Given("I set the valid auth key")
     public void i_set_the_valid_auth_key() {
@@ -38,7 +43,7 @@ public class StripeSteps  {
     @When("I send a Post request to url")
     public void i_send_a_Post_request_to() {
         RestAssured.baseURI = prop.getProperty("baseUri");
-        RestAssured.basePath=prop.getProperty("basePath");
+        RestAssured.basePath = prop.getProperty("basePath");
         res = reqSpec.log().all().post(prop.getProperty("customerApiEndpoint"));
         res.prettyPrint();
 
@@ -63,5 +68,22 @@ public class StripeSteps  {
     @Then("we should get {string} as description the response")
     public void we_should_get_as_description_the_response(String expectedDescription) {
         Assert.assertEquals(TestUtilities.getJsonKeyValue(res.asString(), "description"), expectedDescription);
+    }
+
+    @Given("I setup {string} in the field email")
+    public void i_setup_in_the_field_email(String email) throws IOException {
+        fileData = new String(Files.readAllBytes(Paths.get(filePath)));
+        fileData = fileData.replace("<email>", email);
+    }
+
+    @Given("I set {string} in the description")
+    public void i_set_in_the_description(String description) throws IOException {
+        //fileData = new String(Files.readAllBytes(Paths.get(filePath)));
+        fileData = fileData.replace("<description>", description);
+    }
+
+    @When("I send a request to url")
+    public void i_send_a_request_to_url() {
+       res=given().log().all().auth().basic(prop.getProperty("validSecretKey"),"").body(fileData).post("https://api.stripe.com/v1/customers");
     }
 }
