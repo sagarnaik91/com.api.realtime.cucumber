@@ -7,13 +7,17 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.api.base.BaseTest.prop;
@@ -61,7 +65,6 @@ public class StripeSteps {
 
     @Then("we should get get {string} as email in the response")
     public void we_should_get_get_as_email_in_the_response(String expectedEmail) {
-        System.out.println("Value of custom field is ---->" + TestUtilities.getJsonKeyValueFromMap(res, "invoice_settings.custom_fields"));
         Assert.assertEquals(TestUtilities.getJsonKeyValue(res.asString(), "email"), expectedEmail);
     }
 
@@ -84,6 +87,23 @@ public class StripeSteps {
 
     @When("I send a request to url")
     public void i_send_a_request_to_url() {
-       res=given().log().all().auth().basic(prop.getProperty("validSecretKey"),"").body(fileData).post("https://api.stripe.com/v1/customers");
+        RestAssured.baseURI = prop.getProperty("baseUri");
+        RestAssured.basePath = prop.getProperty("basePath");
+        res = given().log().all().auth().basic(prop.getProperty("validSecretKey"), "").body(fileData).post(prop.getProperty("customerApiEndpoint"));
+        res.prettyPrint();
+    }
+
+    @Then("I should get {string} and {string} as the expected status code")
+    public void i_should_get_and_as_the_expected_status_code(String objectLocator, String fieldToBeValidated) {
+        Map<String, String> mapOfJson = new HashMap<>();
+        mapOfJson = TestUtilities.getJsonKeyValueFromMap(res, objectLocator);
+        System.out.println("----->>>>>>>" + mapOfJson.size());
+        Assert.assertTrue(mapOfJson.get(fieldToBeValidated) == null);
+    }
+
+    @Then("validate the schema passed in {string}")
+    public void validate_the_schema_passed_in(String schemaPath) {
+        res.prettyPrint();
+        res.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(new File(schemaPath)));
     }
 }

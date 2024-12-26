@@ -1,7 +1,8 @@
 Feature: Validate create order feature
   I want to create a paypal order using this feature
 
-  Scenario Outline: Validate paypal create order using valid details
+  @paypal
+  Scenario Outline: Create paypal order and validate status is created
     Given I want to get access token from paypal api
     When I set currency code as "<currency_code>" and value as "<value>"
     And I verify status as CREATED
@@ -10,11 +11,11 @@ Feature: Validate create order feature
       | USD           | 100   |
       | USD           | 200   |
 
-  @ValidateGetOrderResponse
-  Scenario Outline: Validate the response of get order using valid details
+  @paypal
+  Scenario Outline: Create paypal order and validate the links array returned in the response
     Given I want to get access token from paypal api
     When I set currency code as "<currency_code>" and value as "<value>"
     Then validate the first rel is "<relValue>"
     Examples:
       | currency_code | value | relValue |
-      | USD           | 300   | links  |
+      | USD           | 300   | links    |
