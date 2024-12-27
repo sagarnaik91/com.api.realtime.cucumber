@@ -7,8 +7,13 @@ import com.api.pojo.PurchaseUnits;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
@@ -39,8 +44,18 @@ public class OrderAPI extends BaseTest {
     }
 
     public static Response getOrder() {
-        System.out.println(orderId +" is the orderId");
+        System.out.println(orderId + " is the orderId");
         return given().log().all().auth().oauth2(getAccessToken()).get("v2/checkout/orders" + "/" + orderId);
 
+    }
+
+    public static Response createOrder(String currency_code, String value, String referenceId) throws IOException {
+        String requestData = new String(Files.readAllBytes(Paths.get((String) prop.get("paypalCreateReqPayload"))));
+        requestData = requestData.replace("<reference_id>", referenceId);
+        requestData = requestData.replace("<currency_code>", currency_code);
+        requestData = requestData.replace("<value>", value);
+        Response res = given().log().all().contentType(ContentType.JSON).auth().oauth2(access_token).body(requestData).post("/v2/checkout/orders");
+        res.prettyPrint();
+        return res;
     }
 }
