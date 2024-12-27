@@ -25,8 +25,6 @@ import static io.restassured.RestAssured.given;
 
 public class StripeSteps {
 
-
-
     @Given("I set the valid auth key")
     public void i_set_the_valid_auth_key() {
         reqSpec = given().log().all().auth().basic(prop.getProperty("validSecretKey"), "");
@@ -94,16 +92,16 @@ public class StripeSteps {
         response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(new File(schemaPath)));
     }
 
-    @Given("I set {string} in the description")
-    public void i_set_in_the_description(String description) throws IOException {
-        //fileData = new String(Files.readAllBytes(Paths.get(filePath)));
-        fileData = fileData.replace("<description>", description);
-    }
-
     @Given("I setup {string} in the field email")
     public void i_setup_in_the_field_email(String email) throws IOException {
-        System.out.println("------->>>stripeCreateReqPayload---"+stripeCreateReqPayload);
         fileData = new String(Files.readAllBytes(Paths.get(stripeCreateReqPayload)));
         fileData = fileData.replace("<email>", email);
     }
+
+    @Given("I set {string} in the description")
+    public void i_set_in_the_description(String description) throws IOException {
+        fileData = fileData.replace("<description>", description);
+    }
+
+
 }

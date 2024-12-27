@@ -17,21 +17,6 @@ Feature: Validate stripe create customer API
       | abc@test.com | description 11 to 20 | 200        | id         | abc@test.com  | description 11 to 20 | src/test/resources/responseSchema/stripeResponseWithFields |
 
   @stripe
-  Scenario Outline: Create a strip customer using the request from file and validating the statusCode
-    Given I set the valid auth key
-    And I setup "<email>" in the field email
-    And I set "<description>" in the description
-    When I send a request to url
-    Then I should get <StatusCode> as the expected status code
-    And validate the schema passed in "<path>"
-    Examples:
-      | email        | description          | StatusCode | path                                                  |
-      | 123@test.com | description 21 to 30 | 200        | src/test/resources/responseSchema/stripeResponse.json |
-      | 456@test.com | description 31 to 40 | 200        | src/test/resources/responseSchema/stripeResponse.json |
-      | 789@test.com | description 41 to 50 | 200        | src/test/resources/responseSchema/stripeResponse.json |
-      | abc@test.com | description 51 to 60 | 200        | src/test/resources/responseSchema/stripeResponse.json |
-
-  @stripe
   Scenario Outline: Create a strip customer using the request from file and validating the invoice_settings json object
     Given I set the valid auth key
     And I setup "<email>" in the field email

@@ -20,11 +20,11 @@ import static io.restassured.RestAssured.given;
 public class OrderAPI extends BaseTest {
     //static String orderId;
     public static String getAccessToken() {
-        Response res = given().param("grant_type", "client_credentials")
+        response = given().param("grant_type", "client_credentials")
                 .auth().preemptive().basic(clientID, clientSecret)
                 .post("v1/oauth2/token");
-        res.prettyPrint();
-        access_token = res.jsonPath().getString("access_token");
+        response.prettyPrint();
+        access_token = response.jsonPath().getString("access_token");
         return access_token;
     }
 
@@ -32,11 +32,11 @@ public class OrderAPI extends BaseTest {
         ArrayList<PurchaseUnits> list = new ArrayList<PurchaseUnits>();
         list.add(new PurchaseUnits("d9f80740-38f0-11e8-b467-0ed5f89f718c", currency_code, value));
         Orders orders = new Orders("CAPTURE", list);
-        Response res = given().log().all().contentType(ContentType.JSON).auth().oauth2(getAccessToken()).body(orders).post("/v2/checkout/orders");
+        response = given().log().all().contentType(ContentType.JSON).auth().oauth2(getAccessToken()).body(orders).post("/v2/checkout/orders");
         System.out.println("------------Response of create order------------");
-        res.prettyPrint();
-        orderId = res.jsonPath().getString("id");
-        return res;
+        response.prettyPrint();
+        orderId = response.jsonPath().getString("id");
+        return response;
     }
 
     public static Response getOrder() {
@@ -46,12 +46,12 @@ public class OrderAPI extends BaseTest {
     }
 
     public static Response createOrder(String currency_code, String value, String referenceId) throws IOException {
-        String requestData = new String(Files.readAllBytes(Paths.get(paypalCreateReqPayload)));
-        requestData = requestData.replace("<reference_id>", referenceId);
-        requestData = requestData.replace("<currency_code>", currency_code);
-        requestData = requestData.replace("<value>", value);
-        Response res = given().log().all().contentType(ContentType.JSON).auth().oauth2(access_token).body(requestData).post("/v2/checkout/orders");
-        res.prettyPrint();
-        return res;
+        fileData = new String(Files.readAllBytes(Paths.get(paypalCreateReqPayload)));
+        fileData = fileData.replace("<reference_id>", referenceId);
+        fileData = fileData.replace("<currency_code>", currency_code);
+        fileData = fileData.replace("<value>", value);
+        response = given().log().all().contentType(ContentType.JSON).auth().oauth2(access_token).body(fileData).post("/v2/checkout/orders");
+        response.prettyPrint();
+        return response;
     }
 }
