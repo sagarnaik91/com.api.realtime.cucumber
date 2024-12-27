@@ -37,9 +37,9 @@ Feature: Validate stripe create customer API
     And I setup "<email>" in the field email
     And I set "<description>" in the description
     When I send a request to url
-    Then I should get "<objectLocator>" and "<fieldToBeValidated>" as the expected status code
+    Then I should get "<mapLocatorInJsonResponse>" and "<fieldToBeValidated>" as the expected status code
     Examples:
-      | email        | description          | objectLocator    | fieldToBeValidated     |
+      | email        | description          | mapLocatorInJsonResponse    | fieldToBeValidated     |
       | efg@test.com | description 41 to 50 | invoice_settings | default_payment_method |
       | hij@test.com | description 51 to 60 | invoice_settings | default_payment_method |
 

@@ -36,6 +36,7 @@ public class PayPalSteps {
     public void i_set_currency_code_as_and_value_as(String currencycode, String currencyvalue) {
         response = OrderAPI.createOrder(currencycode, currencyvalue);
         orderId = TestUtilities.getJsonKeyValue(response.asString(), "id");
+
     }
 
     @When("I verify status as CREATED")

@@ -18,11 +18,7 @@ import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 public class OrderAPI extends BaseTest {
-    public static String clientID = prop.getProperty("payPalClientId");
-    public static String clientSecret = prop.getProperty("payPalClientSecret");
-    public static String access_token;
-    static String orderId;
-
+    //static String orderId;
     public static String getAccessToken() {
         Response res = given().param("grant_type", "client_credentials")
                 .auth().preemptive().basic(clientID, clientSecret)
@@ -50,7 +46,7 @@ public class OrderAPI extends BaseTest {
     }
 
     public static Response createOrder(String currency_code, String value, String referenceId) throws IOException {
-        String requestData = new String(Files.readAllBytes(Paths.get((String) prop.get("paypalCreateReqPayload"))));
+        String requestData = new String(Files.readAllBytes(Paths.get(paypalCreateReqPayload)));
         requestData = requestData.replace("<reference_id>", referenceId);
         requestData = requestData.replace("<currency_code>", currency_code);
         requestData = requestData.replace("<value>", value);
