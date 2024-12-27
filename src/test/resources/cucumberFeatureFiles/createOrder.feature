@@ -15,17 +15,22 @@ Feature: Validate create order feature
   Scenario Outline: Create paypal order and validate the links array returned in the response
     Given I want to get access token from paypal api
     When I set currency code as "<currency_code>" and value as "<value>"
-    Then validate the first rel is "<relValue>"
+    Then validate the array block "<arrayBlockPathInJson>" and "<field1InsideArrayBlock>" and "<field1ValueInsideArrayBlock>" and "<field2InsideArrayBlock>"
     Examples:
-      | currency_code | value | relValue |
-      | USD           | 300   | links    |
+      | currency_code | value | arrayBlockPathInJson | field1InsideArrayBlock | field1ValueInsideArrayBlock | field2InsideArrayBlock |
+      | USD           | 300   | links                | rel                    | self                        | href                   |
+      | USD           | 300   | links                | rel                    | approve                     | href                   |
+      | USD           | 300   | links                | rel                    | update                      | href                   |
+      | USD           | 300   | links                | rel                    | capture                     | href                   |
 
-  @paypal1
+  @paypal
   Scenario Outline: Create paypal order by reading request from file and validate the links array returned in the response
     Given I want to get access token from paypal api
     When I set currency code as "<currency_code>" and value as "<value>" and "<referenceId>"
-    Then validate the first rel is "<relValue>"
+    Then validate the array block "<arrayBlockPathInJson>" and "<field1InsideArrayBlock>" and "<field1ValueInsideArrayBlock>" and "<field2InsideArrayBlock>"
     Examples:
-      | currency_code | value | referenceId                          | relValue |
-      | USD           | 300   | a9f80740-38f0-11e8-b467-0ed5f89f718c | links    |
-      | USD           | 400   | b9f80740-38f0-11e8-b467-0ed5f89f718c | links    |
+      | currency_code | value | arrayBlockPathInJson | field1InsideArrayBlock | field1ValueInsideArrayBlock | field2InsideArrayBlock |
+      | USD           | 300   | links                | rel                    | self                        | href                   |
+      | USD           | 300   | links                | rel                    | approve                     | href                   |
+      | USD           | 300   | links                | rel                    | update                      | href                   |
+      | USD           | 300   | links                | rel                    | capture                     | href                   |

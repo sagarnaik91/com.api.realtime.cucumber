@@ -23,11 +23,11 @@ import java.util.Optional;
 import static com.api.base.BaseTest.prop;
 import static io.restassured.RestAssured.given;
 
-public class StripeSteps {
-    public RequestSpecification reqSpec = null;
-    public Response res = null;
+public class StripeSteps{
     String filePath = "src/test/resources/requestPayload/stripeCreateRequest";
     String fileData;
+    public RequestSpecification reqSpec = null;
+    public Response res = null;
 
     @Given("I set the valid auth key")
     public void i_set_the_valid_auth_key() {
@@ -38,6 +38,7 @@ public class StripeSteps {
     public void i_set_as_the_email_in_the_parameter(String email) {
         reqSpec = reqSpec.log().all().formParam("email", email);
     }
+
 
     @Given("I set {string} as the description in the parameter")
     public void i_set_as_the_description_in_the_parameter(String description) {
@@ -73,18 +74,6 @@ public class StripeSteps {
         Assert.assertEquals(TestUtilities.getJsonKeyValue(res.asString(), "description"), expectedDescription);
     }
 
-    @Given("I setup {string} in the field email")
-    public void i_setup_in_the_field_email(String email) throws IOException {
-        fileData = new String(Files.readAllBytes(Paths.get(filePath)));
-        fileData = fileData.replace("<email>", email);
-    }
-
-    @Given("I set {string} in the description")
-    public void i_set_in_the_description(String description) throws IOException {
-        //fileData = new String(Files.readAllBytes(Paths.get(filePath)));
-        fileData = fileData.replace("<description>", description);
-    }
-
     @When("I send a request to url")
     public void i_send_a_request_to_url() {
         RestAssured.baseURI = prop.getProperty("baseUri");
@@ -105,5 +94,17 @@ public class StripeSteps {
     public void validate_the_schema_passed_in(String schemaPath) {
         res.prettyPrint();
         res.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(new File(schemaPath)));
+    }
+
+    @Given("I set {string} in the description")
+    public void i_set_in_the_description(String description) throws IOException {
+        //fileData = new String(Files.readAllBytes(Paths.get(filePath)));
+        fileData = fileData.replace("<description>", description);
+    }
+
+    @Given("I setup {string} in the field email")
+    public void i_setup_in_the_field_email(String email) throws IOException {
+        fileData = new String(Files.readAllBytes(Paths.get(filePath)));
+        fileData = fileData.replace("<email>", email);
     }
 }

@@ -36,15 +36,17 @@ public class PayPalSteps {
     public void i_set_currency_code_as_and_value_as(String currencycode, String currencyvalue) {
         response = OrderAPI.createOrder(currencycode, currencyvalue);
         orderId = TestUtilities.getJsonKeyValue(response.asString(), "id");
-
-
     }
 
     @When("I verify status as CREATED")
     public void i_verify_status_as_CREATED() {
         orderId = TestUtilities.getJsonKeyValue(response.asString(), "id");
         Assert.assertEquals(TestUtilities.getJsonKeyValue(response.asString(), "status"), "CREATED");
-
+    }
+    @When("I set currency code as {string} and value as {string} and {string}")
+    public void i_set_currency_code_as_and_value_as_and(String currency_code, String value, String referenceId) throws IOException {
+        response = OrderAPI.createOrder(currency_code, value, referenceId);
+        orderId = response.jsonPath().getString("id");
     }
 
     @When("I get order from paypal api")
@@ -57,26 +59,20 @@ public class PayPalSteps {
         Assert.assertEquals(response.getStatusCode(), statusCode);
     }
 
-    @Then("validate the first rel is {string}")
-    public void validate_the_first_rel_is(String links) {
-        // Write code here that turns the phrase above into concrete actions
+    @Then("validate the array block {string} and {string} and {string} and {string}")
+    public void validate_the_array_block_and_and (String locatorInJsonResponse, String fieldName1, String field1Value,String fieldName2) {
         List<Map<String, String>> listOfJson = new ArrayList<>();
-        listOfJson = TestUtilities.getJsonKeyValueFromArray(response, links);
+        listOfJson = TestUtilities.getJsonKeyValueFromArray(response, locatorInJsonResponse);
         System.out.println("Size of listOfJson is ---->" + listOfJson.size());
         for (int i = 0; i < listOfJson.size(); i++) {
-            if (listOfJson.get(i).get("rel").equals("update")) {
+            if (listOfJson.get(i).get(fieldName1).equals(field1Value)) {
                 System.out.println("orderId is--->" + orderId);
-                Assert.assertTrue(listOfJson.get(i).get("href").contains(orderId));
+                Assert.assertTrue(listOfJson.get(i).get(fieldName2).contains(orderId));
 
             }
         }
     }
 
-    @When("I set currency code as {string} and value as {string} and {string}")
-    public void i_set_currency_code_as_and_value_as_and(String currency_code, String value, String referenceId) throws IOException {
-        response = OrderAPI.createOrder(currency_code, value, referenceId);
-        orderId = response.jsonPath().getString("id");
 
-    }
 
 }
