@@ -7,13 +7,9 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.response.Response;
 import org.testng.Assert;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,13 +58,13 @@ public class PayPalSteps {
 
     @Then("validate the array block {string} and {string} and {string} and {string}")
     public void validate_the_array_block_and_and (String locatorInJsonResponse, String fieldName1, String field1Value,String fieldName2) {
-        List<Map<String, String>> listOfJson = new ArrayList<>();
-        listOfJson = TestUtilities.getJsonKeyValueFromArray(response, locatorInJsonResponse);
+        List<Map<String, Object>> listOfJson = new ArrayList<>();
+        listOfJson = TestUtilities.getArrayFromJsonResponse(response, locatorInJsonResponse);
         System.out.println("Size of listOfJson is ---->" + listOfJson.size());
         for (int i = 0; i < listOfJson.size(); i++) {
             if (listOfJson.get(i).get(fieldName1).equals(field1Value)) {
                 System.out.println("orderId is--->" + orderId);
-                Assert.assertTrue(listOfJson.get(i).get(fieldName2).contains(orderId));
+                Assert.assertTrue(listOfJson.get(i).get(fieldName2).toString().contains(orderId));
 
             }
         }

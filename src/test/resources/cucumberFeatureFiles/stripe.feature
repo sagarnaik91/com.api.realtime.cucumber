@@ -17,14 +17,14 @@ Feature: Validate stripe create customer API
       | abc@test.com | description 11 to 20 | 200        | id         | abc@test.com  | description 11 to 20 | src/test/resources/responseSchema/stripeResponseWithFields |
 
   @stripe
-  Scenario Outline: Create a strip customer using the request from file and validating the invoice_settings json object
+  Scenario Outline: Create a stripe customer using the request from file and validating the invoice_settings json object
     Given I set the valid auth key
     And I setup "<email>" in the field email
     And I set "<description>" in the description
     When I send a request to url
     Then I should get "<mapLocatorInJsonResponse>" and "<fieldToBeValidated>" as the expected status code
     Examples:
-      | email        | description          | mapLocatorInJsonResponse    | fieldToBeValidated     |
-      | efg@test.com | description 41 to 50 | invoice_settings | default_payment_method |
-      | hij@test.com | description 51 to 60 | invoice_settings | default_payment_method |
+      | email        | description          | mapLocatorInJsonResponse | fieldToBeValidated     |
+      | efg@test.com | description 41 to 50 | invoice_settings         | default_payment_method |
+      | hij@test.com | description 51 to 60 | invoice_settings         | default_payment_method |
 

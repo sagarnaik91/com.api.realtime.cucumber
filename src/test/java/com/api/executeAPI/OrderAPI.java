@@ -18,9 +18,9 @@ import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 public class OrderAPI extends BaseTest {
-    //static String orderId;
+
     public static String getAccessToken() {
-        response = given().param("grant_type", "client_credentials")
+        response = given().log().all().param("grant_type", "client_credentials")
                 .auth().preemptive().basic(clientID, clientSecret)
                 .post("v1/oauth2/token");
         response.prettyPrint();

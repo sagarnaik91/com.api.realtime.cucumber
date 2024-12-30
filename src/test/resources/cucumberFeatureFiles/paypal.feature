@@ -34,3 +34,12 @@ Feature: Validate create order feature
       | USD           | 300   | links                | rel                    | approve                     | href                   | b9f80740-38f0-11e8-b467-0ed5f89f718c |
       | USD           | 300   | links                | rel                    | update                      | href                   | c9f80740-38f0-11e8-b467-0ed5f89f718c |
       | USD           | 300   | links                | rel                    | capture                     | href                   | d9f80740-38f0-11e8-b467-0ed5f89f718c |
+
+  @paypal
+  Scenario Outline: Validate get order feature with valid details
+    Given I want to get access token from paypal api
+    When I get order from paypal api
+    And I verify status code as <statusCode>
+    Examples:
+      | statusCode |
+      | 200        |
