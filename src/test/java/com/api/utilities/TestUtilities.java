@@ -13,7 +13,6 @@ public class TestUtilities {
     public static boolean hasKey(String json, String key) {
         JSONObject jsonObject = new JSONObject(json);
         return jsonObject.has(key);
-
     }
 
     public static String getJsonKeyValue(String json, String key) {
@@ -33,8 +32,14 @@ public class TestUtilities {
     }
 
     public static Object getValueOfKeyFromArrayOfMap(List<Map<String, Object>> responseBody, String fieldName) {
-        Object val = 0;
-        val = responseBody.get(0).get(fieldName);
-        return val;
+        return responseBody.get(0).get(fieldName);
+    }
+
+    public static Object getKeyValueFromMap(Map<String, String> responseBody, String key) {
+        return responseBody.get(key);
+    }
+
+    public static int getCountOfObject(Map<String, String> responseMap) {
+        return responseMap.size();
     }
 }
