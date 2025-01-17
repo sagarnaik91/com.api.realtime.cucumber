@@ -56,6 +56,18 @@ public class jsonplaceholderSteps {
         Map<String, String> res = new HashMap<>();
         res = TestUtilities.getMapFromJsonResponse(response, "$");
         Assert.assertEquals(TestUtilities.getCountOfObject(res), 4);
+    }
 
+    @Given("I send a get request with {int} and comments in the path param")
+    public void i_send_a_get_request_with_and_comments_in_the_path_param(Integer postId) {
+        response = JsonPlaceholderAPI.getAPIWithPostIdComments(postId);
+    }
+
+
+    @Then("Validate the {string}")
+    public void validate_the(String name) {
+        List<Map<String, Object>> respBody = TestUtilities.getArrayFromJsonResponse(response, "$");
+        Object nameofCx = TestUtilities.getValueOfKeyFromArrayOfMap(respBody, "name");
+        Assert.assertEquals(nameofCx, name);
     }
 }

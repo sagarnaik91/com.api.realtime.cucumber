@@ -1,0 +1,37 @@
+{
+  "type": "array",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "minItems": 1,
+  "uniqueItems": true,
+  "items": {
+    "type": "object",
+    "required": [
+      "postId",
+      "id",
+      "name",
+      "email",
+      "body"
+    ],
+    "properties": {
+      "postId": {
+        "type": "number"
+      },
+      "id": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "email": {
+        "type": "string",
+        "minLength": 1
+      },
+      "body": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

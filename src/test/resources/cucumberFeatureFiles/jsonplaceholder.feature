@@ -10,7 +10,7 @@ Feature: Validate the fields of https://jsonplaceholder.typicode.com/posts
     Given I send a get request with "id" query param and value as 89
     Then Validate the value of "userId" is 9
 
-  @jsonplaceholder1
+  @jsonplaceholder
   Scenario Outline: Execute the get method to retrieve the posts based on the id and validate status code is 200 and there is only one block for a specific id
     Given I send a get request with <id> in the path param
     Then Validate statusCode returned is <statusCode>
@@ -20,3 +20,14 @@ Feature: Validate the fields of https://jsonplaceholder.typicode.com/posts
       | 1  | 200        |
       | 2  | 200        |
       | 3  | 200        |
+
+  @jsonplaceholder1
+  Scenario Outline: Validate the comments of the postId has name as expected
+    Given I send a get request with <postId> and comments in the path param
+    Then Validate statusCode returned is 200
+    And  Validate the "<name>"
+    Examples:
+      | postId | name                                                   |
+      | 1      | id labore ex et quam laborum                           |
+      | 2      | et fugit eligendi deleniti quidem qui sint nihil autem |
+

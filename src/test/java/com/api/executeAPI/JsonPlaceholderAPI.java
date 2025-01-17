@@ -13,4 +13,8 @@ public class JsonPlaceholderAPI {
         return given().log().all().contentType(ContentType.JSON).get(String.valueOf(id));
 
     }
+
+    public static Response getAPIWithPostIdComments(int postId) {
+        return given().auth().basic("", "").log().all().get(postId + "/comments");
+    }
 }
