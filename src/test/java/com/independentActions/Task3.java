@@ -16,7 +16,5 @@ public class Task3 {
         Map<String,Object> carSigns= (Map<String, Object>) responseArray.get(0).get("car");
         List<Object> signs=(List<Object>) carSigns.get("signs");
         System.out.println(signs.get(0));
-
-
     }
 }
